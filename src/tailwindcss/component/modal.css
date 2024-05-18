@@ -1,0 +1,3 @@
+.modal{
+    @apply relative fixed top-0 left-0 w-full h-full bg-black bg-opacity-[30%] flex items-center justify-center transition-opacity duration-300
+}

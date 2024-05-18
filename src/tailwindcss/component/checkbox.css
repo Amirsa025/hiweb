@@ -1,0 +1,44 @@
+
+.checkbox {
+    @apply cursor-pointer   appearance-none border border-gray-400 rounded-sm;
+    &:focus {
+        @apply outline outline-2 outline-offset-2 transition-all outline-gray-200 ;
+    }
+    &-ghost {
+        @apply bg-opacity-5 border-gray-100;
+        &:focus {
+            @apply bg-opacity-100 ;
+            box-shadow: none;
+        }
+    }
+    &-success {
+        @apply  border-success;
+        &:focus {
+            @apply  outline-success;
+        }
+    }
+    &-error {
+        @apply  border-error;
+        &:focus {
+            @apply  outline-error;
+        }
+    }
+
+    &-xs {
+        @apply w-4 h-4 ;
+    }
+    &-md {
+        @apply w-8 h-8;
+    }
+    &-lg {
+        @apply  w-12 h-12  ;
+    }
+    &-sm {
+        @apply w-6 h-6 ;
+    }
+    &-disabled,
+    &:disabled,
+    &[disabled] {
+        @apply cursor-not-allowed  border-base-200  bg-base-200 text-opacity-20  placeholder-base-content placeholder-opacity-20;
+    }
+}
