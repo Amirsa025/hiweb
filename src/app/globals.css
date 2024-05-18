@@ -37,6 +37,9 @@
     .file-title {
         @apply absolute left-[30%] z-[-1] text-sm  border rounded-[0.5rem] w-[70%] border-gray-200 py-[8px]
     }
+    .card-wrapper {
+        @apply mt-[24px] min-h-[75vh] px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-[24px] gap-y-[18px]  h-full  flex-col
+    }
 }
 textarea {
   resize: none;

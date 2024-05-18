@@ -50,7 +50,6 @@ export const SiginInPage = () => {
       router.replace("/product");
     }, 1000);
   }
-  //
 
   // username req
   const [userName, setUserName] = useState("");

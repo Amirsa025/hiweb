@@ -29,7 +29,7 @@ export function Product() {
         </div>
       )}
       <EmptyList data={data} />
-      <div className="mt-[24px] min-h-[75vh] px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-col-3 xl:grid-cols-4 gap-x-[24px] gap-y-[18px]  h-full  flex-col  ">
+      <div className="card-wrapper">
         {isPlaceholderData || isRefetching ? (
           <>
             {data?.data?.list.map((item: ProductResponse, id: React.Key) => {
