@@ -69,16 +69,25 @@ export const SiginInPage = () => {
     const currentTime = Date.now();
     return currentTime >= expiryTime;
   };
+
   useEffect(() => {
-    if (
-      token &&
-      isTokenExpired(response?.data.accessToken.expire_access_token!) &&
-      !isTokenExpired(response?.data.accessToken.expire_refresh_token!) &&
-      refreshToken
-    ) {
-      submittion({ userName, refreshToken });
+    const accessTokenExpiry = response?.data.accessToken.expire_access_token;
+    const refreshTokenExpiry = response?.data.accessToken.expire_refresh_token;
+
+    if (accessTokenExpiry && refreshTokenExpiry) {
+      if (
+        isTokenExpired(accessTokenExpiry) &&
+        !isTokenExpired(refreshTokenExpiry) &&
+        refreshToken
+      ) {
+        submittion({ userName, refreshToken });
+      } else if (isTokenExpired(refreshTokenExpiry)) {
+        cookie.remove("token");
+        cookie.remove("refreshToken");
+        router.replace("/login");
+      }
     }
-  }, [token, refreshToken]);
+  }, [isTokenExpired]);
 
   return (
     <div className="h-full flex items-center   flex-col space-y-[118px]">
@@ -179,18 +188,3 @@ export const SiginInPage = () => {
     </div>
   );
 };
-
-
-const expiryTime = new Date(expireDate);
-const currentTime = Date.now();
-const isExpir = expiryTime - currentTime
-
-if(isExpir<0){
-  // refresh
-  // setTimeout next refresh
-}else{
-  setTimeout(() => {
-    //refresh
-    //setTimeout next refresh
-  }, isExpir);
-}

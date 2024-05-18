@@ -2,23 +2,7 @@ import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { readData } from "@/core/http-service/http-service";
 import Cookies from "universal-cookie";
 import { useState } from "react";
-// Define the type for a single product
-type Product = {
-  id: string;
-  title: string;
-  price: number;
-  description: string;
-  // add other product fields here
-};
 
-// Define the type for the response data
-type ProductResponse = {
-  data: {
-    items: Product[];
-    totalRowCount: number;
-  };
-  // add other response fields here
-};
 const getProduct = (count: number, skip: number) => {
   const cookie = new Cookies();
   const token = cookie.get("token");

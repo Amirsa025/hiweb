@@ -4,7 +4,7 @@ const cookies = new Cookies();
 export const setToken = (token: string) => {
   cookies.set("token", token, {
     path: "/",
-    maxAge: 60 * 60 * 60,
+    maxAge: 60 * 60 * 60 * 24,
     secure: true,
     sameSite: "lax",
   });
@@ -12,7 +12,7 @@ export const setToken = (token: string) => {
 export const setRefreshToken = (refreshToken: string) => {
   cookies.set("refreshToken", refreshToken, {
     path: "/",
-    maxAge: 60 * 60 * 60,
+    maxAge: 60 * 20 * 60,
     secure: true,
     sameSite: "lax",
   });
