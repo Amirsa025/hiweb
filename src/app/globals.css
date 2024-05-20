@@ -12,7 +12,7 @@
     }
 
     html {
-        font-family: var(--font-vazir);
+        font-family: var(--font-Vazirmtn);
     }
     :lang(en) {
         font-family: var(--font-inter);

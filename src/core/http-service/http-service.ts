@@ -49,6 +49,9 @@ httpService.interceptors.response.use(
           setTokens(data.token);
           originalRequest.headers.Authorization = `Bearer ${data.token}`;
           return httpService(originalRequest);
+        } else {
+          cookies.remove("token");
+          cookies.remove("refreshToken");
         }
       } catch (refreshError) {
         cookies.remove("token");

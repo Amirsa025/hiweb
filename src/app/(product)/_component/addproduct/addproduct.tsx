@@ -37,19 +37,16 @@ export function AddProduct({
 
   const onSubmit = (data: addProduct) => {
     const formData: FormData = new FormData();
-    formData.append("ProductTitle", data?.ProductTitle ?? "");
+    formData.append("ProductTitle", data?.ProductTitle!);
     formData.append("ProductPrice", data?.ProductPrice ?? "");
     formData.append("Description", data.Description ?? "");
-    if (data.file) {
-      formData.append("file", data.file);
-    }
+    if (data.file) formData.append("file", data.file);
     const submitData = {
       ProductTitle: formData.get("ProductTitle") as string,
       ProductPrice: formData.get("ProductPrice") as string,
       Description: formData.get("Description") as string | undefined,
       file: formData.get("file") as File | undefined,
     };
-
     submit(submitData);
   };
 

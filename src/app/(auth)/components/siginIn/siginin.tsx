@@ -15,6 +15,7 @@ import { useRefreshToken } from "@/app/(auth)/_api/refresh-token";
 import { useEffect, useState } from "react";
 import { wait } from "next/dist/lib/wait";
 import { getUserName } from "@/store/auth/authSlice";
+import { isTokenExpired } from "@/helper";
 
 export const SiginInPage = () => {
   const { submittion } = useRefreshToken();
@@ -23,7 +24,6 @@ export const SiginInPage = () => {
   const dispatch = useAppDispatch();
   const cookie = new Cookies();
   const refreshToken = cookie.get("refreshToken");
-  const token = cookie.get("token");
 
   const {
     register,
@@ -61,13 +61,6 @@ export const SiginInPage = () => {
       setUserName(user);
     }
   }, [user]);
-
-  // refreshToken req
-  const isTokenExpired = (expireDate: string): boolean => {
-    const expiryTime = new Date(expireDate).getTime();
-    const currentTime = Date.now();
-    return currentTime >= expiryTime;
-  };
 
   useEffect(() => {
     const accessTokenExpiry = response?.data.accessToken.expire_access_token;
