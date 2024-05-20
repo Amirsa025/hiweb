@@ -2,12 +2,10 @@
 import React, { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { IconClose } from "@/app/_components/icons/icons";
-
-interface ModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  children: React.ReactNode;
-}
+import {
+  AnimationStage,
+  ModalProps,
+} from "@/app/_components/modal/modal.types";
 
 export const Modal: React.FC<ModalProps> = ({
   isOpen,
@@ -15,46 +13,56 @@ export const Modal: React.FC<ModalProps> = ({
   onClose,
   ...rest
 }) => {
-  const [visible, setVisible] = useState(isOpen);
+  const [visible, setVisible] = useState(false);
+  const [animationStage, setAnimationStage] = useState<AnimationStage>(
+    AnimationStage.Exited,
+  );
 
   useEffect(() => {
     if (isOpen) {
       setVisible(true);
+      setAnimationStage(AnimationStage.Entering);
+    } else {
+      setAnimationStage(AnimationStage.Exiting);
     }
   }, [isOpen]);
 
   useEffect(() => {
-    const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        onClose();
-      }
-    };
-    if (isOpen) {
-      document.addEventListener("keydown", handleEscape);
+    if (animationStage === AnimationStage.Entering) {
+      const timer = setTimeout(
+        () => setAnimationStage(AnimationStage.Entered),
+        300,
+      );
+      return () => clearTimeout(timer);
     }
-
-    return () => {
-      document.removeEventListener("keydown", handleEscape);
-    };
-  }, [isOpen, onClose]);
+    if (animationStage === AnimationStage.Exiting) {
+      const timer = setTimeout(() => {
+        setVisible(false);
+        setAnimationStage(AnimationStage.Exited);
+        onClose();
+      }, 300); // Match the transition duration
+      return () => clearTimeout(timer);
+    }
+  }, [animationStage, onClose]);
 
   const handleClose = () => {
-    setVisible(false);
-    onClose();
+    setAnimationStage(AnimationStage.Exiting);
   };
 
-  if (!isOpen && !visible) return null;
+  if (!visible && animationStage === AnimationStage.Exited) return null;
 
   return createPortal(
     <div
-      className={`fixed top-0 left-0 z-50 w-full h-full bg-black bg-opacity-[30%] flex items-center justify-center transition-opacity duration-300 ${
-        isOpen ? "opacity-100" : "opacity-0"
+      className={`fixed top-0 left-0 z-50 w-full h-full bg-black bg-opacity-30 flex items-center justify-center transition-opacity duration-300 ${
+        animationStage === AnimationStage.Entered ? "opacity-100" : "opacity-0"
       }`}
-      onClick={handleClose} // Close modal when clicking on the backdrop
+      onClick={handleClose}
     >
       <div
-        className={`relative p-4 rounded-[1rem] shadow-lg bg-white mx-4 w-[50rem] transition-transform duration-300 ${
-          isOpen ? "scale-100" : "scale-95"
+        className={`relative p-4 rounded-lg shadow-lg bg-white mx-4 w-[50rem] transition-transform duration-300 ${
+          animationStage === AnimationStage.Entered
+            ? "transform scale-100 opacity-100"
+            : "transform scale-95 opacity-0"
         }`}
         onClick={(e) => e.stopPropagation()}
       >

@@ -6,3 +6,9 @@ export type ModalProps = ComponentBase & {
   onClose: () => void;
   children: React.ReactNode;
 };
+export enum AnimationStage {
+  Entering = "entering",
+  Entered = "entered",
+  Exiting = "exiting",
+  Exited = "exited",
+}

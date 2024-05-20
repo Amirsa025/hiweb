@@ -16,6 +16,7 @@ import { useEffect, useState } from "react";
 import { wait } from "next/dist/lib/wait";
 import { getUserName } from "@/store/auth/authSlice";
 import { isTokenExpired } from "@/helper";
+import { FadeLoader } from "react-spinners";
 
 export const SiginInPage = () => {
   const { submittion } = useRefreshToken();
@@ -96,21 +97,10 @@ export const SiginInPage = () => {
         {isSuccess ? (
           <div className="flex items-center justify-center">
             <div className="flex flex-col items-center justify-center space-y-[48px]">
-              <Image
-                src="/images/success.svg"
-                width={50}
-                height={50}
-                alt="success"
-              />
               <div className="text-success text-[20px]" dir="rtl">
                 ورود شما با موفقیت انجام شد.
               </div>
-              <Image
-                src="/images/loading.svg"
-                width={50}
-                height={50}
-                alt="success"
-              />
+              <FadeLoader color="#a9a9a9" />
             </div>
           </div>
         ) : (

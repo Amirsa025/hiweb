@@ -1,7 +1,6 @@
 import React from "react";
 import ReactPaginate from "react-paginate";
 import { IconLeft, IconRight } from "@/app/_components/icons/icons";
-
 const Pagination = ({
   onPageChange,
   pageCount,

@@ -1,5 +1,5 @@
 "use client";
-import React, { Fragment } from "react";
+import React, { Fragment, useCallback } from "react";
 import { useGetProduct } from "@/app/(product)/_api/get-product";
 import { Pagination } from "@/app/(product)/_component/pagination";
 import { ProductList } from "@/app/(product)/_component/product-list";
@@ -7,7 +7,10 @@ import EmptyList from "@/app/(product)/_component/empty-list/empty-list";
 import { ProductResponse } from "@/app/(product)/_api/add-product";
 import { LoadingCard } from "@/app/_components/skeleton";
 import { Loading } from "@/app/_components/loading";
-
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+interface PaginationEvent {
+  selected: number;
+}
 export function Product() {
   const {
     data,
@@ -17,10 +20,20 @@ export function Product() {
     isLoading,
     isRefetching,
   } = useGetProduct();
-  const handlePageClick = (event: any) => {
-    const newOffset = event.selected * 8;
-    setItemOffset(newOffset);
-  };
+  const pathname = usePathname();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const handlePageClick = useCallback(
+    (event: PaginationEvent) => {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set("page", (event.selected + 1).toString());
+      const newOffset = event.selected * 8;
+      setItemOffset(newOffset);
+      router.replace(`${pathname}?${params.toString()}`);
+    },
+    [searchParams, setItemOffset, router, pathname],
+  );
   return (
     <div className="flex flex-col justify-between h-full ">
       {isLoading && (
