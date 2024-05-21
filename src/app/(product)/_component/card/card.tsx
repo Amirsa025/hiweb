@@ -1,14 +1,20 @@
 import React from "react";
 import { Product } from "./card.type";
+import Image from "next/image";
+import { getBlurDataURL } from "@/helper";
 
 export function Card({ proudct }: { proudct: Product }) {
   return (
     <div className="relative flex flex-col ">
       <div className="max-w-[25.75rem] max-h-[10.5rem] ">
-        <img
+        <Image
+          width={0}
+          height={0}
           src={`${proudct?.imageUrl}`}
           className="rounded-[0.5rem] shadow-card  w-full h-full  relative z-10"
           alt={proudct.title}
+          placeholder="blur"
+          blurDataURL={getBlurDataURL()}
         />
       </div>
       <div

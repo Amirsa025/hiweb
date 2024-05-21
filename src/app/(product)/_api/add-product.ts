@@ -2,17 +2,9 @@ import Cookies from "universal-cookie";
 import { useMutation } from "@tanstack/react-query";
 import { createData } from "@/core/http-service/http-service";
 import { addProduct } from "@/app/(product)/_component/types/addproduct.types";
-type uploadFile = {
-  Authorization: string;
-  "Content-Type"?: string;
-};
-export interface ProductResponse {
-  description: string;
-  id: string;
-  imageUrl: string;
-  price: number;
-  title: string;
-}
+import { UseSignInOptions } from "@/app/(product)/type/get-product.type";
+import { ProductResponse } from "@/app/(product)/type/product.type";
+
 const uploadfile = (model: addProduct): Promise<ProductResponse> => {
   const cookie = new Cookies();
   const token = cookie.get("token");
@@ -37,9 +29,7 @@ const uploadfile = (model: addProduct): Promise<ProductResponse> => {
     headers,
   );
 };
-type UseSignInOptions = {
-  onSuccess?: () => void;
-};
+
 const useAddProduct = ({ onSuccess }: UseSignInOptions) => {
   return useMutation({
     mutationFn: uploadfile,

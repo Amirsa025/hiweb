@@ -11,3 +11,6 @@ export type ProductResponse = {
     totalRowCount: number;
   };
 };
+export type UseSignInOptions = {
+  onSuccess?: () => void;
+};

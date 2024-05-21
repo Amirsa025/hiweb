@@ -8,6 +8,7 @@ import { addProductSchema } from "@/app/(product)/_component/types/addProduct.sc
 import { useAddProduct } from "@/app/(product)/_api/add-product";
 import toast from "react-hot-toast";
 import { useGetProduct } from "@/app/(product)/_api/get-product";
+import { revalidatePath } from "next/cache";
 
 export function AddProduct({
   onClose,
