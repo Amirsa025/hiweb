@@ -2,6 +2,7 @@ import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { readData } from "@/core/http-service/http-service";
 import Cookies from "universal-cookie";
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 
 const getProduct = (count: number, skip: number) => {
   const cookie = new Cookies();
@@ -9,6 +10,7 @@ const getProduct = (count: number, skip: number) => {
   const headers = {
     Authorization: `${token}`,
   };
+
   return readData<any>(
     `/General/Product/ProductList?count=${count}&skip=${skip}`,
     headers,
@@ -18,6 +20,9 @@ const getProduct = (count: number, skip: number) => {
 export const useGetProduct = () => {
   const [itemOffset, setItemOffset] = useState(0);
   const itemsPerPage = 8;
+  const searchParams = useSearchParams();
+  const params = new URLSearchParams(searchParams.toString());
+
   const { data, isPlaceholderData, refetch, isLoading, isRefetching } =
     useQuery({
       queryKey: ["product", itemOffset],

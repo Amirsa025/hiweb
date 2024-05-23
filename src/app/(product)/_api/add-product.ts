@@ -3,9 +3,9 @@ import { useMutation } from "@tanstack/react-query";
 import { createData } from "@/core/http-service/http-service";
 import { addProduct } from "@/app/(product)/_component/types/addproduct.types";
 import { UseSignInOptions } from "@/app/(product)/type/get-product.type";
-import { ProductResponse } from "@/app/(product)/type/product.type";
+import { AddProductResponse } from "@/app/(product)/type/product.type";
 
-const uploadfile = (model: addProduct): Promise<ProductResponse> => {
+const uploadfile = (model: addProduct): Promise<AddProductResponse> => {
   const cookie = new Cookies();
   const token = cookie.get("token");
 
@@ -23,7 +23,7 @@ const uploadfile = (model: addProduct): Promise<ProductResponse> => {
     "Content-Type": "multipart/form-data",
   };
 
-  return createData<addProduct, ProductResponse>(
+  return createData<addProduct, AddProductResponse>(
     "General/Product/AddProduct",
     payload,
     headers,

@@ -1,4 +1,4 @@
-import { ProductResponse } from "@/app/(product)/_api/add-product";
+import { AddProductResponse } from "@/app/(product)/type/product.type";
 
 interface Product {
   id: string;
@@ -8,7 +8,7 @@ interface Product {
 export interface ProductListProps {
   data: {
     data: {
-      list: ProductResponse[];
+      list: AddProductResponse[];
     };
   };
 }

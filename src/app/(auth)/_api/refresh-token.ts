@@ -5,6 +5,8 @@ import { AxiosError } from "axios";
 import toast from "react-hot-toast";
 import { useAppDispatch } from "@/store/auth/store";
 import { setTokens, userName } from "@/store/auth/authSlice";
+import Cookies from "universal-cookie";
+import { useRouter } from "next/navigation";
 interface RefreshTokenProps {
   refreshToken?: string | null;
   userName: string | null;
@@ -30,17 +32,17 @@ export const useRefreshToken = () => {
       toast.error("An unknown error occurred");
     }
   };
-
+  const cookie = new Cookies();
+  const router = useRouter();
   const {
     mutate: submittion,
     isPending,
     data,
-    error,
     isSuccess,
   } = useMutation({
     mutationFn: RefreshToken,
     onError,
-    onSuccess: () => {
+    onSuccess: (res) => {
       if (isSuccess) {
         dispatch(
           setTokens({
@@ -49,6 +51,11 @@ export const useRefreshToken = () => {
           }),
         );
         dispatch(userName({ userName: data?.data?.userName }));
+      }
+      if (res.hasError) {
+        cookie.remove("token");
+        cookie.remove("refreshToken");
+        router.replace("/");
       }
     },
   });

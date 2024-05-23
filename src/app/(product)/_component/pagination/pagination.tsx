@@ -1,6 +1,7 @@
 import React from "react";
 import ReactPaginate from "react-paginate";
 import { IconLeft, IconRight } from "@/app/_components/icons/icons";
+import { useSearchParams } from "next/navigation";
 const Pagination = ({
   onPageChange,
   pageCount,
@@ -8,10 +9,13 @@ const Pagination = ({
   pageCount: number;
   onPageChange?(selectedItem: { selected: number }): void;
 }) => {
+  const searchParams = useSearchParams();
+  const currentPage = parseInt(searchParams.get("page") || "1", 10) - 1;
   return (
     <div lang="fa">
       <ReactPaginate
         breakLabel="..."
+        forcePage={currentPage}
         breakClassName="font-bold"
         pageCount={pageCount}
         onPageChange={onPageChange}

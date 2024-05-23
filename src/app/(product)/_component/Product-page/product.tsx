@@ -1,16 +1,20 @@
 "use client";
-import React, { Fragment, useCallback } from "react";
+import React, { Fragment, useCallback, useEffect } from "react";
 import { useGetProduct } from "@/app/(product)/_api/get-product";
 import { Pagination } from "@/app/(product)/_component/pagination";
-import { ProductList } from "@/app/(product)/_component/product-list";
+
 import EmptyList from "@/app/(product)/_component/empty-list/empty-list";
-import { ProductResponse } from "@/app/(product)/_api/add-product";
+
 import { LoadingCard } from "@/app/_components/skeleton";
 import { Loading } from "@/app/_components/loading";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { ProductResponse } from "@/app/(product)/type/get-product.type";
+import { CardProduct } from "@/app/(product)/_component/product-list";
+
 interface PaginationEvent {
   selected: number;
 }
+
 export function Product() {
   const {
     data,
@@ -23,19 +27,27 @@ export function Product() {
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
+  const currentPage = parseInt(searchParams.get("page") || "1");
+
+  useEffect(() => {
+    const newOffset = (currentPage - 1) * 8;
+    setItemOffset(newOffset);
+  }, [currentPage, setItemOffset]);
 
   const handlePageClick = useCallback(
     (event: PaginationEvent) => {
       const params = new URLSearchParams(searchParams.toString());
-      params.set("page", (event.selected + 1).toString());
+      const selectedPage = event.selected + 1;
+      params.set("page", selectedPage.toString());
       const newOffset = event.selected * 8;
       setItemOffset(newOffset);
       router.replace(`${pathname}?${params.toString()}`);
     },
     [searchParams, setItemOffset, router, pathname],
   );
+
   return (
-    <div className="flex flex-col justify-between h-full ">
+    <div className="flex flex-col justify-between h-full">
       {isLoading && (
         <div className="flex items-center justify-center min-h-[75vh]">
           <Loading size="large" variant="success" />
@@ -45,16 +57,14 @@ export function Product() {
       <div className="card-wrapper">
         {isPlaceholderData || isRefetching ? (
           <>
-            {data?.data?.list.map((item: ProductResponse, id: React.Key) => {
-              return (
-                <Fragment key={id}>
-                  <LoadingCard />
-                </Fragment>
-              );
-            })}
+            {data?.data?.list.map((item: ProductResponse, id: React.Key) => (
+              <Fragment key={id}>
+                <LoadingCard />
+              </Fragment>
+            ))}
           </>
         ) : (
-          <ProductList data={data} />
+          <CardProduct data={data} />
         )}
       </div>
       <div className="mt-[24px]">

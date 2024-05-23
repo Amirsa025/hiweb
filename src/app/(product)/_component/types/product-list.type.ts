@@ -1,14 +1,16 @@
-import { ProductResponse } from "@/app/(product)/_api/add-product";
+import { ProductResponse } from "@/app/(product)/type/get-product.type";
 
-interface Product {
-  id: string;
+interface ProductItem {
+  imageUrl: string;
   title: string;
+  description: string;
+  price: number;
 }
 
 export interface ProductListProps {
   data: {
     data: {
-      list: ProductResponse[];
+      list: ProductItem[];
     };
   };
 }
